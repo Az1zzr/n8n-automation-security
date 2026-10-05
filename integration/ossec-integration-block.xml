@@ -1,0 +1,7 @@
+<!-- Add inside <ossec_config> in /var/ossec/etc/ossec.conf -->
+<integration>
+  <name>custom-n8n</name>
+  <hook_url>https://YOUR-N8N-DOMAIN/webhook/wazuh-alert</hook_url>
+  <level>7</level>
+  <alert_format>json</alert_format>
+</integration>

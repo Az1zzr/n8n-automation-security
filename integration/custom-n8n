@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import sys
+import json
+import urllib.request
+
+# Wazuh calls integrations as: custom-n8n <alert_file> <api_key> <hook_url>
+alert_file = sys.argv[1]
+webhook_url = sys.argv[3]
+
+with open(alert_file, "r") as f:
+    alert = json.load(f)
+
+payload = json.dumps(alert).encode("utf-8")
+
+request = urllib.request.Request(
+    webhook_url,
+    data=payload,
+    headers={"Content-Type": "application/json"},
+    method="POST"
+)
+
+try:
+    with urllib.request.urlopen(request, timeout=10) as response:
+        print(response.read().decode())
+except Exception as e:
+    print(f"n8n integration error: {e}")
+    sys.exit(1)
